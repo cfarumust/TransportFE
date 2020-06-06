@@ -1,0 +1,103 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+form {
+    padding-top: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.submitButton {
+    width: 100%;
+}
+
+.mat-form-field {
+    display: block !important;
+}
+
+.timeIcon {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.timepicker-dial__item_active {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.companyIcon {
+    height: 30vh;
+    width: auto;
+    margin: auto;
+    display: block;
+}
+
+.assignedFieldByRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    form {
+        max-width: 90%;
+        .assignedFieldByRow {
+            formly-field {
+                width: 45%;
+            }
+        }
+    }
+}
+  
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    form {
+        max-width: 80%;
+    }
+  }
+  
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    form {
+        max-width: 70%;
+    }
+  } 
+  
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    form {
+        max-width: 50%;
+    }
+  } 
+  
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+    form {
+        max-width: 40%;
+    }
+  }

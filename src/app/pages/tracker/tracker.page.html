@@ -1,0 +1,16 @@
+<!-- home.page.html -->
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-title>
+      Ionic Google Maps
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <agm-map [latitude]="lat" [longitude]="lng">
+    <agm-direction [origin]="directions.origin" [destination]="directions.destination">
+    </agm-direction>
+  </agm-map>
+</ion-content>

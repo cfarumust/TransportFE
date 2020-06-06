@@ -1,0 +1,7 @@
+{
+  "name": "shipperapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

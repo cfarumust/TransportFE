@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Signup
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img class="companyIcon" [src]="homeIcon" />
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+    <ion-row>
+      <ion-col>
+        <button type="submit" color="primary" mat-raised-button class="submitButton"> Signup</button>
+      </ion-col>
+      <ion-col>
+        <button color="primary" mat-raised-button class="submitButton" routerLink="/login"> Login</button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
