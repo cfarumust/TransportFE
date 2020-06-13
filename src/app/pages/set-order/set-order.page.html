@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/orders"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Set Order</ion-title>
+    <ion-buttons slot="end" (click)="auth.logout()">
+        <mat-icon>exit_to_app</mat-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>From</mat-label>
+      <input [formControl]="formSearchInput" required="true" matInput (keydown.enter)="$event.preventDefault()" autocorrect="off" autocapitalize="off" spellcheck="off" #fromSearch>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>To</mat-label>
+      <input [formControl]="toSearchInput" required="true" matInput (keydown.enter)="$event.preventDefault()" autocorrect="off" autocapitalize="off" spellcheck="off" #toSearch>
+    </mat-form-field>
+    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+    <button color="primary" mat-raised-button class="submitButton"> Set Order</button>
+  </form>
+</ion-content>

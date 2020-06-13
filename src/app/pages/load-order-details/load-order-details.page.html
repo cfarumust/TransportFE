@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/orders"></ion-back-button>
+    </ion-buttons> 
+    <ion-title>Order Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="orderLoads">
+    <app-tracker></app-tracker>
+    <mat-nav-list *ngFor="let orders of orderLoads">
+      <a mat-list-item class="mat-3-line">
+        <h2 matLine *ngIf="orders.saddresspickup && orders.saddressdrop">{{orders.saddresspickup}} => {{orders.saddressdrop}}</h2>
+        <p matLine *ngIf="orders.nloadid"> Load Id: {{orders.nloadid}} </p>
+        <p matLine *ngIf="orders.nlegid !== 0"> Trip: {{orders.nlegid + 1}} </p>
+        <p matLine *ngIf="orders.nlegid === 0"> Trip: {{orders.nlegid + 1}} </p>
+        <mat-divider></mat-divider>
+      </a>
+      <mat-divider></mat-divider>
+    </mat-nav-list>
+  </ng-container>
+</ion-content>

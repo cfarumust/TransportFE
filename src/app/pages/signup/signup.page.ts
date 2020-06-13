@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { signupConfig } from './signup.config';
+import { AuthService } from '../../services/auth.service';
+import { DataShareService } from '../../services/dataShareService';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +12,7 @@ import { signupConfig } from './signup.config';
 })
 export class SignupPage implements OnInit {
 
-  constructor() { }
+  constructor(public auth: AuthService, public dataShareService: DataShareService) { }
 
   homeIcon = '../../assets/images/shipping_icon.png';
   form = new FormGroup({});
@@ -18,7 +20,15 @@ export class SignupPage implements OnInit {
   fields: FormlyFieldConfig[] = signupConfig;
 
   onSubmit() {
-    console.log(this.model);
+    if (this.form.valid) {
+      this.model['SPASSWORD'] = this.model['SPASSWORD'].password;
+      const loginName = this.dataShareService.getLoginDetails();
+      this.auth.register(this.model, loginName).subscribe((data) => {
+        console.log(data);
+      }, (error) => {
+        console.log(error);
+      });
+    }
   }
 
 

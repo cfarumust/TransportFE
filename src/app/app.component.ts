@@ -5,7 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
+import { LoadingController } from '@ionic/angular';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +14,17 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
+  loader: HTMLIonLoadingElement;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public auth: AuthService,
     public router: Router,
-    public storage: Storage
+    public loadingController: LoadingController,
+    public loadingService: LoadingService,
   ) {
     this.initializeApp();
   }
@@ -29,13 +34,16 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.storage.get('ACCESS_TOKEN').then((token) => {
+/*       this.storage.get('ACCESS_TOKEN').then((token) => {
+        this.loadingService.present();
         if (token) {
-          this.router.navigateByUrl('/set-order');
+          this.loadingService.dismiss();
+          this.router.navigate(['/orders']);
         } else {
-          this.router.navigateByUrl('/login');
+          this.loadingService.dismiss();
+          this.router.navigate(['/login']);
         }
-      });
+      }); */
     });
   }
 }

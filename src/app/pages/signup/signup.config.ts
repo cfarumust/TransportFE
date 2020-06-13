@@ -3,32 +3,24 @@ import { FormControl } from '@angular/forms';
 
 export const signupConfig: FormlyFieldConfig[] = [
     {
-        key: 'SFIRSTNAME',
+        key: 'SNAME',
         type: 'input',
         templateOptions: {
-            label: 'Firstname',
+            label: 'Name/Org Name',
             required: true,
         }
     },
     {
-        key: 'SLASTNAME',
+        key: 'SPHONE',
         type: 'input',
         templateOptions: {
-            label: 'Lastname',
-            required: true,
-        }
-    },
-    {
-        key: 'STELEPHONENUMBER',
-        type: 'input',
-        templateOptions: {
-            type: 'number',
+            type: 'string',
             label: 'Mobile No',
             required: true,
         }
     },
     {
-        key: 'SEMAILADDRESS',
+        key: 'SEMAIL',
         type: 'input',
         templateOptions: {
           label: 'Email',
@@ -37,7 +29,7 @@ export const signupConfig: FormlyFieldConfig[] = [
         },
       },
     {
-        key: 'SADDRESS1',
+        key: 'SADDRESS',
         type: 'input',
         templateOptions: {
             label: 'Address',
@@ -45,7 +37,15 @@ export const signupConfig: FormlyFieldConfig[] = [
         }
     },
     {
-        key: 'password',
+      key: 'SUSERNAME',
+      type: 'input',
+      templateOptions: {
+          label: 'Username',
+          required: true,
+      }
+  },
+    {
+        key: 'SPASSWORD',
         validators: {
           fieldMatch: {
             expression: (control: FormControl) => {

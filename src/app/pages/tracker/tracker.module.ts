@@ -4,9 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TrackerPageRoutingModule } from './tracker-routing.module';
 import { TrackerPage } from './tracker.page';
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   imports: [
@@ -14,13 +11,8 @@ import { AgmDirectionModule } from 'agm-direction';
     FormsModule,
     IonicModule,
     TrackerPageRoutingModule,
-    AgmDirectionModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBeCFketdO1G0mIkVJRbpos_JvYROwxV_k',
-      libraries: ['places']
-      })
   ],
-  declarations: [TrackerPage],
-  providers: [NativeGeocoder]
+  declarations: [],
+  providers: []
 })
 export class TrackerPageModule {}

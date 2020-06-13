@@ -5,11 +5,13 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 import { MaterialModule } from '../../materialModule/customMaterial.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    MatIconModule,
     MaterialModule,
     IonicModule,
     LoginPageRoutingModule,

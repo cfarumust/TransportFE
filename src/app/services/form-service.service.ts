@@ -1,29 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ErrorHandler } from './errorHandler.service';
-import { Storage } from '@ionic/storage';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, zip, from, forkJoin } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
 
-  constructor(private httpClient: HttpClient, private errorHandler: ErrorHandler, private storage: Storage) { }
+  constructor(private httpClient: HttpClient) { }
 
-  public url = 'https://www.mishnmash.de/order';
+  public url = 'https://www.mishnmash.de';
 
   sendOrder(data: any, token: string): Observable<any> {
-    return this.httpClient.post<any>(this.url, data, this.getAuthHeaders(token)).pipe(
-      catchError(this.errorHandler.handleError)
-    );
+    return this.httpClient.post<any>(`${this.url}/order`,  data, this.getAuthHeaders(token));
   }
 
-  getData(): Observable<any> {
-    return this.httpClient.get<any>(this.url, this.getHeaders()).pipe(
-      catchError(this.errorHandler.handleError)
-    );
+  getOrders(clientId: number, token: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.url}/order/client/${clientId}`, this.getAuthHeaders(token));
+  }
+
+  getLoadsAvailable(token: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.url}/load/shipper/loads-available`, this.getAuthHeaders(token));
+  }
+
+  getShipperLoads(shipperId: number, token: string) {
+    return this.httpClient.get<any>(`${this.url}/load/shipper/shipperid/${shipperId}`, this.getAuthHeaders(token));
+  }
+
+  getOrderDetails(orderId: number, token: string) {
+    const urls = [`${this.url}/load/client/orderid/${orderId}`, `${this.url}/order/route/${orderId}`];
+
+    return forkJoin([
+      this.httpClient.get<any>(`${this.url}/load/client/orderid/${orderId}`, this.getAuthHeaders(token)),
+      this.httpClient.get<any>(`${this.url}/order/route/${orderId}`, this.getAuthHeaders(token))
+    ]);
   }
 
   getHeaders(): { headers: HttpHeaders } {

@@ -1,21 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>orders</ion-title>
+    <!--     <ion-buttons slot="start">
+      <ion-back-button routerLink="/set-order"></ion-back-button>
+    </ion-buttons> -->
+    <ion-title>Orders</ion-title>
+    <ion-buttons class="refreshOrders" slot="end" (click)="loginName === 'clientlogin' ? getOrders() : this.getLoadsAvailable()">
+      <mat-icon>refresh</mat-icon>
+    </ion-buttons>
+    <ion-buttons class="logOutButton" slot="end" (click)="auth.logout()">
+      <mat-icon>exit_to_app</mat-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>Berlin => Leipzig</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="https://www.ostraining.com/cdn/images/wordpress/embedpress/set-up-your-google-map.png" alt="Photo of a Shiba Inu">
-    <mat-card-content>
-      <span>Pickup date: 2020-06-04 11:50:00</span><br>
-      <span>Drop date: 2020-06-04 11:50:00</span><br>
-      <span>Pickup location: Berlin</span><br>
-      <span>Drop location: Leipzig</span><br>
-      <span>Didtance: 201Km</span><br>
-    </mat-card-content>
-  </mat-card>
+  <ng-container *ngIf="clientOrders">
+    <div class="mat-list-container">
+      <mat-nav-list *ngFor="let orders of clientOrders">
+        <a mat-list-item class="mat-3-line" (click)="getOrderLoads(orders.norderid)">
+          <h2 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h2>
+          <h2 matLine *ngIf="orders.saddressdrop">{{orders.saddressdrop}}</h2>
+          <p matLine *ngIf="orders.norderid"> Order Id: {{orders.norderid}} </p>
+          <p matLine *ngIf="orders.dtorderedon"> Ordered On: {{orders.dtorderedon.substring(0, 10)}}</p>
+          <button mat-button>
+            <mat-icon matListIcon>double_arrow</mat-icon>
+          </button>
+          <mat-divider></mat-divider>
+        </a>
+        <mat-divider></mat-divider>
+      </mat-nav-list>
+    </div>
+  </ng-container>
+  <button *ngIf="loginName === 'clientlogin'" color="primary" mat-raised-button class="custom-button" routerLink="/set-order"> Place Order</button>
 </ion-content>

@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { FormService } from '../../services/form-service.service';
 import { AuthService } from '../../services/auth.service';
 import { AlertController } from '@ionic/angular';
+import { LoadingService } from '../../services/loading.service';
+import { DataShareService } from '../../services/dataShareService';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,14 @@ import { AlertController } from '@ionic/angular';
 })
 export class LoginPage {
 
-  constructor(private router: Router, public formService: FormService, public auth: AuthService, public alertCtrl: AlertController) { }
+  constructor(
+    private router: Router,
+    public formService: FormService,
+    public auth: AuthService,
+    public alertCtrl: AlertController,
+    public loadingService: LoadingService,
+    public dataShareService: DataShareService,
+    ) {}
 
   form = new FormGroup({});
   model = {};
@@ -23,13 +32,18 @@ export class LoginPage {
 
   login() {
     if (this.form.valid) {
-      this.auth.login(this.model).subscribe(async res => {
+      const loginName = this.dataShareService.getLoginDetails();
+      this.auth.login(this.model, loginName).subscribe(async res => {
+        this.loadingService.present();
         if (res.success) {
-          this.router.navigateByUrl('/set-order');
+          this.loadingService.dismiss();
+          this.router.navigate(['/orders']);
         } else {
+          this.loadingService.present();
           this.showAlert('Login Failed', 'Wrong Credentials');
         }
       }, async (error) => {
+        this.loadingService.dismiss();
         this.showAlert('Unexpected Error', 'Please try again after some time');
       });
     }

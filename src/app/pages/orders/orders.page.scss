@@ -1,8 +1,51 @@
-.example-card {
-    max-width: 400px;
+mat-nav-list {
+  button {
+    background-color: transparent;
   }
-  
-  .example-header-image {
-    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ9lIiaotoPHPkOvBiHTswf2cWH8nmyPD9u6t7HR4jgD8X351u5&usqp=CAU');
-    background-size: cover;
+
+  h2 {
+    color: orange;
+    font-weight: bold !important;
+    font-size: 20px;
+    padding-bottom: 10px !important;
+  }
+
+  p {
+    padding-bottom: 3px !important;
+  }
+}
+
+ion-footer {
+  position: fixed;
+  width: 100%;
+  justify-content : center;
+  }
+
+  .refreshOrders {
+    margin-right: 20px;
+  }
+
+  .logOutButton {
+    margin-right: 10px;
+  }
+
+  mat-icon {
+    cursor: pointer;
+  }
+
+  .custom-button{
+    position:fixed;
+    right:0;
+    bottom:0;
+    width: 100%;
+    padding: 15px;
+    font-size: 25px;
+    background-color: orange;
+    color: white;
+    font-family: monospace;
+  }
+
+  .mat-list-container {
+    overflow-y: auto;
+    height: 90%;
   }

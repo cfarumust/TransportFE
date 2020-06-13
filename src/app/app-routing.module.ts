@@ -5,7 +5,7 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'set-order',
-    loadChildren: () => import('./pages/order/set-order.module').then(m => m.SetOrderPageModule),
+    loadChildren: () => import('./pages/set-order/set-order.module').then(m => m.SetOrderPageModule),
   },
   {
     path: 'tracker',
@@ -31,6 +31,14 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: () => import('./pages/orders/orders.module').then( m => m.OrdersPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'load-order-details',
+    loadChildren: () => import('./pages/load-order-details/load-order-details.module').then( m => m.LoadOrderDetailsPageModule)
   },
 ];
 

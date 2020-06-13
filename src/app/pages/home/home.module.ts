@@ -2,20 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { OrdersPageRoutingModule } from './orders-routing.module';
-import { OrdersPage } from './orders.page';
-import { MatListModule } from '@angular/material/list';
+import { HomePageRoutingModule } from './home-routing.module';
+import { HomePage } from './home.page';
 import { MatIconModule } from '@angular/material/icon';
+import { MaterialModule } from '../../materialModule/customMaterial.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MatListModule,
+    MaterialModule,
     MatIconModule,
-    OrdersPageRoutingModule
+    HomePageRoutingModule
   ],
-  declarations: [OrdersPage]
+  declarations: [HomePage]
 })
-export class OrdersPageModule {}
+export class HomePageModule {}

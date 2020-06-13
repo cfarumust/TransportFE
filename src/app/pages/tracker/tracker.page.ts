@@ -1,16 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { DataShareService } from '../../services/dataShareService';
 
-interface Directions {
-  origin: {
-    lat: number;
-    lng: number;
-  };
-  destination: {
-    lat: number;
-    lng: number;
-  };
-}
 
 @Component({
   selector: 'app-tracker',
@@ -21,25 +11,30 @@ export class TrackerPage implements OnInit {
 
   public lat = 24.799448; // initial map load data
   public lng = 120.979021; // initial map load data
-  public directions: Directions;
 
-  orderData: any;
+  public origin = { lat: null, lng: null };
+  public destination = { lat: null, lng: null };
 
-  constructor(private route: ActivatedRoute) {
-    this.route.queryParams.subscribe(params => {
-      if (params && params.data) {
-        this.orderData = JSON.parse(params.data);
-        this.directions = this.orderData.directions;
+  waypoints = [];
+
+  constructor(public shareService: DataShareService) {
+    const list = this.shareService.getWayPoints();
+    if (list && list.length !== 0) {
+      const origin = list[0];
+      const destination = list[list.length - 1];
+      this.origin = { lat: origin.nlat, lng: origin.nlong };
+      this.destination = { lat: destination.nlat, lng: destination.nlong };
+      list.shift();
+      list.pop();
+
+      if (list.length !== 0) {
+        list.forEach((element) => {
+          this.waypoints.push({ location: { lat: element.nlat, lng: element.nlong } });
+        });
       }
-    });
+    }
   }
 
-  ngOnInit() {
-  }
-
-/*   getDirection() {
-    this.origin = { lat: 24.799448, lng: 120.979021 };
-    this.destination = { lat: 24.799524, lng: 120.975017 };
-  } */
+  ngOnInit() { }
 
 }

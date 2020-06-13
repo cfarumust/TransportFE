@@ -21,7 +21,7 @@ export class ForgetPasswordPage implements OnInit {
   onSubmit() {
     console.log(this.model);
     if (this.model) {
-      this.router.navigateByUrl('/login');
+      this.router.navigate(['/login']);
     }
   }
 

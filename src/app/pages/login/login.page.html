@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>
       Login
     </ion-title>
@@ -8,6 +11,7 @@
 
 <ion-content>
   <img class="companyIcon" [src]="homeIcon" />
+
   <form [formGroup]="form" (ngSubmit)="login()">
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
     <ion-row>
