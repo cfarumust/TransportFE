@@ -1,0 +1,118 @@
+mat-nav-list {
+    button {
+      background-color: transparent;
+    }
+  
+    h2 {
+      color: orange;
+      font-weight: bold !important;
+      font-size: 20px;
+      padding-bottom: 10px !important;
+    }
+  
+    p {
+      padding-bottom: 3px !important;
+    }
+  }
+  
+  ion-footer {
+    position: fixed;
+    width: 100%;
+    justify-content : center;
+    }
+  
+    .refreshOrders {
+      margin-right: 20px;
+    }
+  
+    .logOutButton {
+      margin-right: 10px;
+    }
+  
+    mat-icon {
+      cursor: pointer;
+    }
+  
+    .custom-button {
+      position:fixed;
+      right:0;
+      bottom:0;
+      width: 100%;
+      padding: 15px;
+      font-size: 25px;
+      background-color: orange;
+      color: white;
+      font-family: monospace;
+    }
+  
+    .mat-list-container {
+      overflow-y: auto;
+      height: 90%;
+    }
+  
+    .no-orders {
+      text-align: center;
+    }
+  
+    .no-orders-button {
+      width: 70%;
+      display: block;
+      margin: 0 auto;
+      padding: 10px;
+      background: orange;
+      color: white;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 15px;
+    }
+  
+    h4::before{
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      margin-right: 5px;
+   }
+  
+   h4:not(:first-child)::before {
+     background-color: black;
+   }
+  
+   h4:first-child::before {
+    background-color: gray;
+  }
+  
+   .connecting-icon {
+     font-size: 45px !important;
+     margin-right: 20px;
+   }
+  
+   .vl {
+    border-left: 4px solid #dcdbdb;
+    height: 30px;
+    margin-left: 3px !important;
+  }
+  
+  .mat-list-base {
+    display: flex;
+    border: 1px solid #e7e5e5;
+  }
+  
+  .mat-list-base .mat-list-item {
+    display: flex !important;
+  }
+  
+  .completedIcon {
+    border: 2px solid green;
+    background: transparent;
+    color: green;
+  }
+  
+  .acceptDeliveryIcon {
+    border: 2px solid orange;
+    background: transparent;
+    color: orange;
+  }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { signupConfig } from './signup.config';
@@ -7,13 +7,14 @@ import { DataShareService } from '../../services/dataShareService';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
 })
-export class SignupPage implements OnInit {
+export class SignupPage implements OnInit, OnDestroy {
 
   constructor(
     public auth: AuthService,
@@ -28,6 +29,8 @@ export class SignupPage implements OnInit {
   model = { };
   fields: FormlyFieldConfig[] = signupConfig;
 
+  subs = new SubSink();
+
   onSubmit() {
     if (this.form.valid) {
       this.loadingService.present();
@@ -35,7 +38,7 @@ export class SignupPage implements OnInit {
         this.model['SPASSWORD'] = this.model['SPASSWORD'].password;
       }
       const loginName = this.dataShareService.getLoginDetails();
-      this.auth.register(this.model, loginName).subscribe((res) => {
+      this.subs.sink = this.auth.register(this.model, loginName).subscribe((res) => {
         if (res && res.success) {
           this.loadingService.dismiss();
           this.showAlert('Success', res.info);
@@ -65,6 +68,10 @@ export class SignupPage implements OnInit {
 
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

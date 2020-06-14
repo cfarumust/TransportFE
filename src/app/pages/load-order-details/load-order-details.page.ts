@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataShareService } from '../../services/dataShareService';
 import { LoadingService } from '../../services/loading.service';
 import { FormService } from '../../services/form-service.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-load-order-details',
   templateUrl: './load-order-details.page.html',
   styleUrls: ['./load-order-details.page.scss'],
 })
-export class LoadOrderDetailsPage implements OnInit {
+export class LoadOrderDetailsPage implements OnInit, OnDestroy {
 
   orderLoads: any;
   loginName = '';
+  subs = new SubSink();
 
   constructor(
     public shareService: DataShareService,
@@ -24,7 +26,6 @@ export class LoadOrderDetailsPage implements OnInit {
     ) {
     this.loginName = this.shareService.getLoginDetails();
     this.orderLoads = this.shareService.getDataOrderLoads();
-    console.log(this.orderLoads);
   }
 
   async acceptOrder(loadId: number) {
@@ -35,11 +36,11 @@ export class LoadOrderDetailsPage implements OnInit {
       NSHIPPERID: parseInt(localStorage.getItem('nshipperid'), 10)
     };
 
-    this.formService.assignToLoad(data, token).subscribe((res) => {
+    this.subs.sink = this.formService.assignToLoad(data, token).subscribe((res) => {
       this.showAlert('Success', res.info);
       this.loadingService.dismiss();
-      this.router.navigate(['/orders']);
-      console.log(res);
+      const navId = this.loginName === 'clientlogin' ? '/client-orders' : '/shipper-orders';
+      this.router.navigate([navId]);
     }, (error) => {
       this.loadingService.dismiss();
       console.log(error);
@@ -55,7 +56,12 @@ export class LoadOrderDetailsPage implements OnInit {
     await alert.present();
   }
 
+
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

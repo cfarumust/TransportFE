@@ -35,7 +35,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      const token = localStorage.getItem('ACCESS_TOKEN');
+/*       const token = localStorage.getItem('ACCESS_TOKEN');
 
       if (token) {
         const loginName = localStorage.getItem('loginName');
@@ -48,7 +48,7 @@ export class AppComponent {
           this.shareService.setLoginDetails('shipperlogin');
           this.router.navigate(['/orders']);
         }
-      }
+      } */
     });
   }
 }

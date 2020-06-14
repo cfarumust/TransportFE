@@ -29,16 +29,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tracker/tracker.module').then(m => m.TrackerPageModule)
   },
   {
-    path: 'orders',
-    loadChildren: () => import('./pages/orders/orders.module').then( m => m.OrdersPageModule)
-  },
-  {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'load-order-details',
     loadChildren: () => import('./pages/load-order-details/load-order-details.module').then( m => m.LoadOrderDetailsPageModule)
+  },
+  {
+    path: 'client-orders',
+    loadChildren: () => import('./pages/client-orders/client-orders.module').then( m => m.ClientOrdersPageModule)
+  },
+  {
+    path: 'shipper-orders',
+    loadChildren: () => import('./pages/shipper-orders/shipper-orders.module').then( m => m.ShipperOrdersPageModule)
   },
 ];
 

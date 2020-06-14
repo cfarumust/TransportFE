@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Orders</ion-title>
+    <ion-buttons class="refreshOrders" slot="end" (click)="refreshOrders()">
+      <mat-icon>refresh</mat-icon>
+    </ion-buttons>
+    <ion-buttons class="logOutButton" slot="end" (click)="auth.logout()">
+      <mat-icon>exit_to_app</mat-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!--   display client orders-->
+  <ng-container *ngIf="clientOrders">
+    <div class="mat-list-container">
+      <mat-nav-list *ngFor="let orders of clientOrders">
+        <a mat-list-item class="mat-3-line" (click)="getOrderLoadDetails(orders.norderid)">
+          <h2 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h2>
+          <h2 matLine *ngIf="orders.saddressdrop">{{orders.saddressdrop}}</h2>
+          <p matLine *ngIf="orders.norderid"> Order Id: {{orders.norderid}} </p>
+          <p matLine *ngIf="orders.dtorderedon"> Ordered On: {{orders.dtorderedon.substring(0, 10)}}</p>
+          <button mat-button>
+            <mat-icon matListIcon>double_arrow</mat-icon>
+          </button>
+          <mat-divider></mat-divider>
+        </a>
+        <mat-divider></mat-divider>
+      </mat-nav-list>
+    </div>
+    <button color="primary" mat-raised-button class="custom-button" routerLink="/set-order"> Place Order</button>
+  </ng-container>
+
+</ion-content>

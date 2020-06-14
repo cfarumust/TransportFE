@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Orders</ion-title>
+    <ion-buttons class="refreshOrders" slot="end" (click)="refreshOrders()">
+      <mat-icon>refresh</mat-icon>
+    </ion-buttons>
+    <ion-buttons class="logOutButton" slot="end" (click)="auth.logout()">
+      <mat-icon>exit_to_app</mat-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-segment scrollable [(ngModel)]="segmentModel">
+    <ion-segment-button value="assigned">
+      My Orders
+    </ion-segment-button>
+    <ion-segment-button value="completed">
+      Completed
+    </ion-segment-button>
+    <ion-segment-button value="orders">
+      New Orders
+    </ion-segment-button>
+  </ion-segment>
+
+  <ng-container *ngIf="shipperAvailableOrders && segmentModel === 'orders'">
+    <div class="mat-list-container">
+      <mat-list *ngFor="let orders of shipperAvailableOrders;let i =index" (click)="shipperLoadAcceptDetails(orders)">
+        <mat-list-item>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+          <h4 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h4>
+          <div matLine class="vl"></div>
+          <h4 matLine *ngIf="orders.nloadid">{{orders.saddressdrop}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>access_time</mat-icon>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[0]}}</h3>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[1]}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="completedOrders && segmentModel === 'completed'">
+    <div class="mat-list-container">
+      <mat-list *ngFor="let orders of completedOrders;let i =index">
+        <mat-list-item>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+          <h4 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h4>
+          <div matLine class="vl"></div>
+          <h4 matLine *ngIf="orders.nloadid">{{orders.saddressdrop}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon class="completedIcon" matListIcon>done</mat-icon>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[0]}}</h3>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[1]}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </ng-container>
+
+  <ng-container
+    *ngIf="assignedOrders && assignedOrders.length !== 0 && segmentModel === 'assigned'">
+    <div class="mat-list-container">
+      <mat-list *ngFor="let orders of assignedOrders;let i =index">
+        <mat-list-item>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+          <h4 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h4>
+          <div matLine class="vl"></div>
+          <h4 matLine *ngIf="orders.nloadid">{{orders.saddressdrop}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon class="acceptDeliveryIcon" (click)="acceptDeliveryDone(orders.nloadid, i)">done_outline</mat-icon>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[0]}}</h3>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[1]}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </ng-container>
+
+  <ng-container
+    *ngIf="assignedOrders && assignedOrders.length === 0 && segmentModel === 'assigned'">
+    <h3 matLine class="no-orders"> No Orders Avaialble </h3>
+    <button color="primary" mat-raised-button class="no-orders-button" (click)="changeSegmentTab()"> Go To Available
+      Orders</button>
+  </ng-container>
+
+</ion-content>

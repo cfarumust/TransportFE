@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { loginConfig } from './login.config';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -8,13 +8,16 @@ import { AuthService } from '../../services/auth.service';
 import { AlertController } from '@ionic/angular';
 import { LoadingService } from '../../services/loading.service';
 import { DataShareService } from '../../services/dataShareService';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit, OnDestroy {
+
+  subs = new SubSink();
 
   constructor(
     private router: Router,
@@ -33,11 +36,17 @@ export class LoginPage {
   login() {
     if (this.form.valid) {
       const loginName = this.dataShareService.getLoginDetails();
-      this.auth.login(this.model, loginName).subscribe(async res => {
+      this.subs.sink = this.auth.login(this.model, loginName).subscribe(async res => {
         this.loadingService.present();
         if (res.success) {
           this.loadingService.dismiss();
-          this.router.navigate(['/orders']);
+          if (loginName === 'clientlogin') {
+            this.router.navigate(['/client-orders']);
+          }
+
+          if (loginName === 'shipperlogin') {
+            this.router.navigate(['/shipper-orders']);
+          }
         } else {
           this.loadingService.present();
           this.showAlert('Login Failed', 'Wrong Credentials');
@@ -56,6 +65,12 @@ export class LoginPage {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }
