@@ -4,6 +4,9 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { signupConfig } from './signup.config';
 import { AuthService } from '../../services/auth.service';
 import { DataShareService } from '../../services/dataShareService';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +15,13 @@ import { DataShareService } from '../../services/dataShareService';
 })
 export class SignupPage implements OnInit {
 
-  constructor(public auth: AuthService, public dataShareService: DataShareService) { }
+  constructor(
+    public auth: AuthService,
+    public dataShareService: DataShareService,
+    public alertCtrl: AlertController,
+    public router: Router,
+    public loadingService: LoadingService,
+    ) { }
 
   homeIcon = '../../assets/images/shipping_icon.png';
   form = new FormGroup({});
@@ -21,14 +30,37 @@ export class SignupPage implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.model['SPASSWORD'] = this.model['SPASSWORD'].password;
+      this.loadingService.present();
+      if (this.model['SPASSWORD']) {
+        this.model['SPASSWORD'] = this.model['SPASSWORD'].password;
+      }
       const loginName = this.dataShareService.getLoginDetails();
-      this.auth.register(this.model, loginName).subscribe((data) => {
-        console.log(data);
+      this.auth.register(this.model, loginName).subscribe((res) => {
+        if (res && res.success) {
+          this.loadingService.dismiss();
+          this.showAlert('Success', res.info);
+          this.router.navigate(['/login']);
+        } else {
+          if (res && res.usernameexists) {
+            this.loadingService.dismiss();
+            this.showAlert('Fail', res.info);
+          }
+        }
       }, (error) => {
+        this.loadingService.dismiss();
+        this.showAlert('Fail', 'Something went wrong, please try again later');
         console.log(error);
       });
     }
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
 

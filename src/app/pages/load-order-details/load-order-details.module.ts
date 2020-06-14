@@ -8,7 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { TrackerPage } from '../tracker/tracker.page';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -16,6 +16,7 @@ import { AgmDirectionModule } from 'agm-direction';
     FormsModule,
     IonicModule,
     MatListModule,
+    MatIconModule,
     LoadOrderDetailsPageRoutingModule,
     AgmDirectionModule,
     AgmCoreModule.forRoot({

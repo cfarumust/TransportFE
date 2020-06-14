@@ -5,12 +5,16 @@ import { FormService } from '../../services/form-service.service';
 import { LoadingService } from '../../services/loading.service';
 import { Router } from '@angular/router';
 import { DataShareService } from '../../services/dataShareService';
+import { AlertController } from '@ionic/angular';
 
 export interface IOrders {
   norderid: number;
   saddresspickup: string;
   saddressdrop: string;
   dtorderedon: string;
+  nloadid?: number;
+  fisconnecting?: string;
+  dtpickupdate?: string;
 }
 
 @Component({
@@ -21,6 +25,14 @@ export interface IOrders {
 export class OrdersPage implements OnInit {
 
   clientOrders: IOrders[];
+
+  assignedOrders: IOrders[] = [];
+  transitOrders: IOrders[] = [];
+  completedOrders: IOrders[] = [];
+  shipperAvailableOrders: IOrders[] = [];
+
+  segmentModel = 'orders';
+
   loginName: string;
 
   constructor(
@@ -30,8 +42,10 @@ export class OrdersPage implements OnInit {
     public loadingService: LoadingService,
     public router: Router,
     public shareService: DataShareService,
+    public alertCtrl: AlertController
     ) {}
 
+    // display client orders
   async getOrders() {
     this.loadingService.present();
     const token = localStorage.getItem('ACCESS_TOKEN');
@@ -45,19 +59,70 @@ export class OrdersPage implements OnInit {
     });
   }
 
-  async getLoadsAvailable() {
+  // get shipper available loads
+  async getShipperLoadsAvailable() {
+    this.loadingService.present();
     const token = localStorage.getItem('ACCESS_TOKEN');
-    const shipperId = localStorage.getItem('nshipperid');
-    // this.formService.getLoadsAvailable(token) // TODO: get all loads available
-    this.formService.getShipperLoads(parseInt(shipperId, 10), token).subscribe((loads) => {
-      this.clientOrders = loads;
+    this.formService.getLoadsAvailable(token).subscribe((loads) => {
+      this.loadingService.dismiss();
+      this.shipperAvailableOrders = loads;
     }, (error) => {
       console.log(error);
       this.loadingService.dismiss();
     });
   }
 
-  async getOrderLoads(orderId: number) {
+  async getShipLoads() {
+    this.loadingService.present();
+    const token = localStorage.getItem('ACCESS_TOKEN');
+    const shipperId = localStorage.getItem('nshipperid');
+    this.formService.getShipperLoads(parseInt(shipperId, 10), token).subscribe((loads) => {
+      this.loadingService.dismiss();
+      if (loads && loads.length !== 0) {
+        this.assignedOrders = loads.filter((load) => {
+          if (load.sstatusid) {
+            return load.sstatusid === '2001';
+
+          }
+        });
+
+        this.transitOrders = loads.filter((load) => {
+          if (load.sstatusid) {
+            return load.sstatusid === '2002';
+
+          }
+        });
+
+        this.completedOrders = loads.filter((load) => {
+          if (load.sstatusid) {
+            return load.sstatusid === '2003';
+          }
+        });
+      }
+    }, (error) => {
+      console.log(error);
+      this.loadingService.dismiss();
+    });
+  }
+
+  async acceptDeliveryDone(loadId: number) {
+    const token = localStorage.getItem('ACCESS_TOKEN');
+    const data = {
+      NLOADID: loadId,
+      NSHIPPERID: parseInt(localStorage.getItem('nshipperid'), 10)
+    };
+
+    this.formService.acceptDelivery(data, token).subscribe((res) => {
+      this.showAlert('Success', res.info);
+      this.loadingService.dismiss();
+    }, (error) => {
+      this.loadingService.dismiss();
+      console.log(error);
+    });
+  }
+
+  // get client order load details
+  async getOrderLoadDetails(orderId: number) {
       const token = localStorage.getItem('ACCESS_TOKEN');
       this.loadingService.present();
       this.formService.getOrderDetails(orderId, token).subscribe(([data, wayPoints]) => {
@@ -72,12 +137,44 @@ export class OrdersPage implements OnInit {
       });
   }
 
+  async shipperLoadAcceptDetails(data: any) {
+    const setData = { origin: { lat: data.npickuplat, lng: data.npickuplong }, destination: { lat: data.ndroplat, lng: data.ndroplong } };
+    this.shareService.setDataOrderLoads(data);
+    this.shareService.setOriginDestinationCoords(setData);
+    this.router.navigate(['/load-order-details']);
+  }
+
+  changeSegmentTab() {
+    this.segmentModel = 'orders';
+  }
+
+  async refreshOrders() {
+    if (this.loginName && this.loginName === 'clientlogin') {
+      this.getOrders();
+    }
+
+    if (this.loginName && this.loginName === 'shipperlogin') {
+      this.getShipLoads();
+      this.getShipperLoadsAvailable();
+    }
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   ngOnInit() {
     this.loginName = this.shareService.getLoginDetails();
     if (this.loginName === 'clientlogin') {
       this.getOrders();
     } else {
-      this.getLoadsAvailable();
+      this.getShipperLoadsAvailable();
+      this.getShipLoads();
     }
   }
 

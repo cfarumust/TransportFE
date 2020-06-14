@@ -18,19 +18,30 @@ export class TrackerPage implements OnInit {
   waypoints = [];
 
   constructor(public shareService: DataShareService) {
-    const list = this.shareService.getWayPoints();
-    if (list && list.length !== 0) {
-      const origin = list[0];
-      const destination = list[list.length - 1];
-      this.origin = { lat: origin.nlat, lng: origin.nlong };
-      this.destination = { lat: destination.nlat, lng: destination.nlong };
-      list.shift();
-      list.pop();
+    const loginName = this.shareService.getLoginDetails();
+    if (loginName === 'clientlogin') {
+      const list = this.shareService.getWayPoints();
+      if (list && list.length !== 0) {
+        const origin = list[0];
+        const destination = list[list.length - 1];
+        this.origin = { lat: origin.nlat, lng: origin.nlong };
+        this.destination = { lat: destination.nlat, lng: destination.nlong };
+        list.shift();
+        list.pop();
 
-      if (list.length !== 0) {
-        list.forEach((element) => {
-          this.waypoints.push({ location: { lat: element.nlat, lng: element.nlong } });
-        });
+        if (list.length !== 0) {
+          list.forEach((element) => {
+            this.waypoints.push({ location: { lat: element.nlat, lng: element.nlong } });
+          });
+        }
+      }
+    }
+
+    if (loginName === 'shipperlogin') {
+      const coords = this.shareService.getOriginDestinationCoords();
+      if (coords) {
+        this.origin = coords.origin;
+        this.destination = coords.destination;
       }
     }
   }

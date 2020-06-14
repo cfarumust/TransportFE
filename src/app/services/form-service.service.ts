@@ -24,6 +24,14 @@ export class FormService {
     return this.httpClient.get<any>(`${this.url}/load/shipper/loads-available`, this.getAuthHeaders(token));
   }
 
+  assignToLoad(data: any, token: string) {
+    return this.httpClient.put<any>(`${this.url}/load/shipper/assign_to_load`,  data, this.getAuthHeaders(token));
+  }
+
+  acceptDelivery(data: any, token: string) {
+    return this.httpClient.put<any>(`${this.url}/load/shipper/loadcompleted`,  data, this.getAuthHeaders(token));
+  }
+
   getShipperLoads(shipperId: number, token: string) {
     return this.httpClient.get<any>(`${this.url}/load/shipper/shipperid/${shipperId}`, this.getAuthHeaders(token));
   }

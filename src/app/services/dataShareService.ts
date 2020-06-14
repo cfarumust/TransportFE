@@ -8,6 +8,7 @@ export class DataShareService {
     loadDetails: any;
     wayPoints: any;
     loginDetails: any;
+    originDdestinationCoords: any;
 
     constructor() { }
 
@@ -27,8 +28,17 @@ export class DataShareService {
         return this.wayPoints;
     }
 
-    setLoginDetails(details: any) {
-        this.loginDetails = details;
+    public setOriginDestinationCoords(data: any) {
+        this.originDdestinationCoords = data;
+    }
+
+    public getOriginDestinationCoords() {
+        return this.originDdestinationCoords;
+    }
+
+    setLoginDetails(loginName: string) {
+        this.loginDetails = loginName;
+        localStorage.setItem('loginName', loginName);
     }
 
     getLoginDetails() {

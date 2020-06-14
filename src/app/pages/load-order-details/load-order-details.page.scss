@@ -1,0 +1,51 @@
+h4::before{
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+ }
+
+ h4:not(:first-child)::before {
+   background-color: black;
+ }
+
+ h4:first-child::before {
+  background-color: gray;
+}
+
+ .connecting-icon {
+   font-size: 45px !important;
+   margin-right: 20px;
+ }
+
+ .vl {
+  border-left: 4px solid #dcdbdb;
+  height: 30px;
+  margin-left: 3px !important;
+}
+
+.mat-list-base {
+  display: flex;
+  border: 1px solid #e7e5e5;
+  margin-top: 30px;
+}
+
+.mat-list-base .mat-list-item {
+  display: flex !important;
+  justify-content: space-between;
+}
+
+button {
+    width: 90%;
+    padding: 10px;
+    background: orange;
+    color: white;
+    font-size: 20px;
+    font-family: monospace;
+    margin: 20px 0 0 20px;
+    border-radius: 5px;
+}

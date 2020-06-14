@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <!--     <ion-buttons slot="start">
-      <ion-back-button routerLink="/set-order"></ion-back-button>
-    </ion-buttons> -->
     <ion-title>Orders</ion-title>
-    <ion-buttons class="refreshOrders" slot="end" (click)="loginName === 'clientlogin' ? getOrders() : this.getLoadsAvailable()">
+    <ion-buttons class="refreshOrders" slot="end" (click)="refreshOrders()">
       <mat-icon>refresh</mat-icon>
     </ion-buttons>
     <ion-buttons class="logOutButton" slot="end" (click)="auth.logout()">
@@ -12,11 +9,26 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <ng-container *ngIf="clientOrders">
+
+  <ion-segment scrollable [(ngModel)]="segmentModel" *ngIf="loginName !== 'clientlogin'">
+    <ion-segment-button value="assigned">
+      My Orders
+    </ion-segment-button>
+    <ion-segment-button value="completed">
+      Completed
+    </ion-segment-button>
+    <ion-segment-button value="orders">
+      New Orders
+    </ion-segment-button>
+  </ion-segment>
+
+  <!--   display client orders-->
+  <ng-container *ngIf="clientOrders && loginName === 'clientlogin'">
     <div class="mat-list-container">
       <mat-nav-list *ngFor="let orders of clientOrders">
-        <a mat-list-item class="mat-3-line" (click)="getOrderLoads(orders.norderid)">
+        <a mat-list-item class="mat-3-line" (click)="getOrderLoadDetails(orders.norderid)">
           <h2 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h2>
           <h2 matLine *ngIf="orders.saddressdrop">{{orders.saddressdrop}}</h2>
           <p matLine *ngIf="orders.norderid"> Order Id: {{orders.norderid}} </p>
@@ -29,6 +41,75 @@
         <mat-divider></mat-divider>
       </mat-nav-list>
     </div>
+    <button color="primary" mat-raised-button class="custom-button" routerLink="/set-order"> Place Order</button>
   </ng-container>
-  <button *ngIf="loginName === 'clientlogin'" color="primary" mat-raised-button class="custom-button" routerLink="/set-order"> Place Order</button>
+
+  <ng-container *ngIf="shipperAvailableOrders && loginName !== 'clientlogin' && segmentModel === 'orders'">
+    <div class="mat-list-container">
+      <mat-list *ngFor="let orders of shipperAvailableOrders;let i =index" (click)="shipperLoadAcceptDetails(orders)">
+        <mat-list-item>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+          <h4 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h4>
+          <div matLine class="vl"></div>
+          <h4 matLine *ngIf="orders.nloadid">{{orders.saddressdrop}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>access_time</mat-icon>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[0]}}</h3>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[1]}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="completedOrders && loginName !== 'clientlogin' && segmentModel === 'completed'">
+    <div class="mat-list-container">
+      <mat-list *ngFor="let orders of completedOrders;let i =index">
+        <mat-list-item>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+          <h4 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h4>
+          <div matLine class="vl"></div>
+          <h4 matLine *ngIf="orders.nloadid">{{orders.saddressdrop}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon class="completedIcon" matListIcon>done</mat-icon>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[0]}}</h3>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[1]}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </ng-container>
+
+  <ng-container
+    *ngIf="assignedOrders && assignedOrders.length !== 0 && loginName !== 'clientlogin' && segmentModel === 'assigned'">
+    <div class="mat-list-container">
+      <mat-list *ngFor="let orders of assignedOrders;let i =index">
+        <mat-list-item>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+          <mat-icon class="connecting-icon" *ngIf="orders.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+          <h4 matLine *ngIf="orders.saddresspickup">{{orders.saddresspickup}}</h4>
+          <div matLine class="vl"></div>
+          <h4 matLine *ngIf="orders.nloadid">{{orders.saddressdrop}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon class="acceptDeliveryIcon" (click)="acceptDeliveryDone(orders.nloadid)">done_outline</mat-icon>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[0]}}</h3>
+          <h3 matLine *ngIf="orders.dtpickupdate">{{orders.dtpickupdate.split('T')[1]}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </ng-container>
+
+  <ng-container
+    *ngIf="assignedOrders && assignedOrders.length === 0 && loginName !== 'clientlogin' && segmentModel === 'assigned'">
+    <h3 matLine class="no-orders"> No Orders Avaialble </h3>
+    <button color="primary" mat-raised-button class="no-orders-button" (click)="changeSegmentTab()"> Go To Available
+      Orders</button>
+  </ng-container>
+
 </ion-content>

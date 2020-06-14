@@ -14,7 +14,6 @@ export class LoadingService {
         this.isLoading = false;
     }
     private async presentLoading(msg: string) {
-        console.log('loading');
         const loading = await this.loadingController.create({
             message: msg,
             spinner: 'circles'

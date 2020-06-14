@@ -5,16 +5,24 @@
 </ion-header>
 
 <ion-content>
-  <img class="companyIcon" [src]="homeIcon" />
+  <div class="homeContainer">
+    <img class="companyIcon" [src]="homeIcon" />
 
-  <button mat-raised-button color="primary" class="shipperLoginButton" (click)="login('clientlogin')">
-   Client Login
-    <mat-icon>double_arrow</mat-icon>
-</button>
-
-<button mat-raised-button color="primary" class="transporterLoginButton" (click)="login('shipperlogin')" >
-  Shipper Login
-   <mat-icon>double_arrow</mat-icon>
-</button>
+    <ion-row>
+      <ion-col>
+        <button mat-raised-button color="primary" class="shipperLoginButton" (click)="login('clientlogin')">
+          Client Login
+          <mat-icon>double_arrow</mat-icon>
+        </button>
+      </ion-col>
+  
+      <ion-col>
+        <button mat-raised-button color="primary" class="transporterLoginButton" (click)="login('shipperlogin')">
+          Shipper Login
+          <mat-icon>double_arrow</mat-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
 
 </ion-content>

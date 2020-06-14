@@ -8,7 +8,7 @@ import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
     selector: 'formly-field-input',
     template: `
   <mat-form-field>
-    <mat-label>Abholzeit</mat-label>
+    <mat-label>Pickup Time</mat-label>
     <input matInput [format]="24" readonly type="dateTime" [ngxTimepicker]="picker" [formControl]="formControl" [formlyAttributes]="field">
     <mat-icon class="timeIcon" (click)="pickTimer()" matSuffix>access_time</mat-icon>
   </mat-form-field>

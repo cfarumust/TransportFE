@@ -19,7 +19,6 @@ export class ForgetPasswordPage implements OnInit {
   fields: FormlyFieldConfig[] = forgetPasswordConfig;
 
   onSubmit() {
-    console.log(this.model);
     if (this.model) {
       this.router.navigate(['/login']);
     }

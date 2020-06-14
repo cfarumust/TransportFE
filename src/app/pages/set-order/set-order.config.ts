@@ -8,7 +8,7 @@ export const screen1Config: FormlyFieldConfig[] = [
                 key: 'DTPICKUPDATE',
                 type: 'datepicker',
                 templateOptions: {
-                    label: 'Abholdatum',
+                    label: 'Pickup Date',
                     required: true,
                 }
             },
@@ -16,7 +16,7 @@ export const screen1Config: FormlyFieldConfig[] = [
                 key: 'DTPICKUPTIME',
                 type: 'dateTime',
                 templateOptions: {
-                    label: 'Abholzeit',
+                    label: 'Pickup Time',
                     required: true,
                 },
             }
@@ -29,7 +29,7 @@ export const screen1Config: FormlyFieldConfig[] = [
                 key: 'DTDROPDATE',
                 type: 'datepicker',
                 templateOptions: {
-                    label: 'Abgabedatum',
+                    label: 'Drop date',
                     required: true,
                 }
             },
@@ -37,7 +37,7 @@ export const screen1Config: FormlyFieldConfig[] = [
                 key: 'DTDROPTIME',
                 type: 'dateTime',
                 templateOptions: {
-                    label: 'Abgabezeit',
+                    label: 'Drop Time',
                     required: true,
                 },
             }

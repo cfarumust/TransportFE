@@ -1,6 +1,6 @@
-import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { screen1Config } from './set-order.config';
 import { AuthService } from '../../services/auth.service';
 import { MapsAPILoader } from '@agm/core';
@@ -21,7 +21,7 @@ export interface IOrderSuccess {
   templateUrl: './set-order.page.html',
   styleUrls: ['./set-order.page.scss'],
 })
-export class SetOrderPage implements OnInit {
+export class SetOrderPage implements OnInit, AfterViewInit {
 
   constructor(
     private formService: FormService,
@@ -35,6 +35,7 @@ export class SetOrderPage implements OnInit {
 
   form = new FormGroup({});
   model: IOrderModel = {} as IOrderModel;
+  options: FormlyFormOptions = {};
 
   formSearchInput = new FormControl('');
   toSearchInput = new FormControl('');
@@ -81,8 +82,11 @@ export class SetOrderPage implements OnInit {
 
   public resetForm() {
     this.form.reset();
-    this.fromSearch.nativeElement.value = '';
-    this.toSearch.nativeElement.value = '';
+    this.options.resetModel();
+    if (this.fromSearch || this.toSearch) {
+      this.fromSearch.nativeElement.value = '';
+      this.toSearch.nativeElement.value = '';
+    }
   }
 
   formatDate() {
@@ -99,7 +103,6 @@ export class SetOrderPage implements OnInit {
     const finalDropDateTime = `${dropDate}T${dropTime}:00`;
     this.model.DTDROPDATE = finalDropDateTime;
     delete this.model['DTDROPTIME'];
-
   }
 
   ngOnInit() {
@@ -135,6 +138,10 @@ export class SetOrderPage implements OnInit {
         });
       });
     });
+  }
+
+  ngAfterViewInit() {
+    this.resetForm();
   }
 
   getDistance() {

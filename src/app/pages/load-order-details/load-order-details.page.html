@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="orderLoads">
+  <ng-container *ngIf="orderLoads && loginName === 'clientlogin'">
     <app-tracker></app-tracker>
     <mat-nav-list *ngFor="let orders of orderLoads">
       <a mat-list-item class="mat-3-line">
@@ -20,5 +20,24 @@
       </a>
       <mat-divider></mat-divider>
     </mat-nav-list>
+  </ng-container>
+
+  <ng-container *ngIf="orderLoads && loginName === 'shipperlogin'">
+    <app-tracker></app-tracker>
+    <mat-list>
+      <mat-list-item>
+        <mat-icon class="connecting-icon" *ngIf="orderLoads.fisconnecting === 'true'" matListIcon>timeline</mat-icon>
+        <mat-icon class="connecting-icon" *ngIf="orderLoads.fisconnecting === 'false'" matListIcon>swap_calls</mat-icon>
+        <h4 matLine *ngIf="orderLoads.saddresspickup">{{orderLoads.saddresspickup}}</h4>
+        <div matLine class="vl"></div>
+        <h4 matLine *ngIf="orderLoads.nloadid">{{orderLoads.saddressdrop}}</h4>
+      </mat-list-item>
+      <mat-list-item>
+        <h3 matLine *ngIf="orderLoads.dtpickupdate">{{orderLoads.dtpickupdate.split('T')[0]}}</h3>
+        <h3 matLine *ngIf="orderLoads.dtpickupdate">{{orderLoads.dtpickupdate.split('T')[1]}}</h3>
+      </mat-list-item>
+    </mat-list>
+
+    <button color="primary" mat-raised-button (click)="acceptOrder(orderLoads.nloadid)" > Accept </button>
   </ng-container>
 </ion-content>
